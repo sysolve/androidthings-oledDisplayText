@@ -143,25 +143,6 @@ public class OledScreen {
         }
     }
 
-    public void drawText() {
-        //mScreen.getLcdWidth();
-        //mScreen.getLcdHeight();
-        //mScreen.clearPixels();
-
-
-        try {
-            //设置亮度
-            mScreen.setContrast(100);
-        } catch (IOException e) {
-            Log.e(TAG, "Error while set contrast", e);
-            throw new RuntimeException(e);
-        }
-
-        mScreen.setPixel(0, 0, true);
-
-        //mScreen.startScroll(startY, finishY, Ssd1306.ScrollMode.LeftHorizontal);
-    }
-
     /**
      * Draws a BMP in one of three positions.
      */
