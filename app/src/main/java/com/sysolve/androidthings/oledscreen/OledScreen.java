@@ -143,9 +143,6 @@ public class OledScreen {
         }
     }
 
-    /**
-     * Draws a BMP in one of three positions.
-     */
     public void drawBitmap(Bitmap bitmap, int xOffset, int yOffset) {
         drawBitmap(bitmap, xOffset, yOffset,false);
     }
