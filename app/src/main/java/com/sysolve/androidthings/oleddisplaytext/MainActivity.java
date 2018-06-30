@@ -18,12 +18,19 @@
 package com.sysolve.androidthings.oleddisplaytext;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.sysolve.androidthings.oledscreen.Font16;
 import com.sysolve.androidthings.oledscreen.OledScreen;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -32,6 +39,25 @@ public class MainActivity extends Activity {
     Font16 font16;
 
     Handler handler = new Handler();
+
+    public String getIP(){
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+                {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address))
+                    {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +106,19 @@ public class MainActivity extends Activity {
                 oledScreen.clearPixels();
                 printText("Android Things使用OLED显示文字的例子");
                 sleep(2000);
-                printText("123,456.7890");
+
+                printText("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                printText("!@#$%^&*():;");
+                printText("abcdefghijklmnopqrstuvwxyz\n");
+
+                String ip = getIP();
+                if (ip!=null)
+                    printText(ip);
+                else
+                    printText("没有获得IP地址");
+                oledScreen.printLn();
                 sleep(1000);
-                printText("!@#$%^&*():;\n");
+
                 printText("Android物联网\n请关注\n智能产品设计开发\n微信公众号");
             }
         }, 100);
